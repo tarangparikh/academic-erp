@@ -1,6 +1,7 @@
 package vo;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table
@@ -17,35 +18,19 @@ public class SpecialisationVO {
     @Column
     String specialisationName;
 
+    @ManyToMany(mappedBy="specialisations",fetch = FetchType.EAGER)
+    private transient Set<CourseVO> courseVOS;
     @Column
     int credits;
 
     public SpecialisationVO() {
     }
 
-    public SpecialisationVO(String specialisationTag, String specialisatoinName, int credits) {
+    public SpecialisationVO(String specialisationTag, String specialisationName, Set<CourseVO> courseVOS, int credits) {
         this.specialisationTag = specialisationTag;
-        this.specialisationName = specialisatoinName;
-        this.credits = credits;
-    }
-
-    public String getSpecialisationName() {
-        return specialisationName;
-    }
-
-    public void setSpecialisationName(String specialisationName) {
         this.specialisationName = specialisationName;
-    }
-
-    @Override
-    public String toString() {
-        return "SpecialisationVO{" +
-                "id=" + id +
-                ", specialisationTag='" + specialisationTag + '\'' +
-                ", specialisatoinName='" + specialisationName
-                + '\'' +
-                ", credits=" + credits +
-                '}';
+        this.courseVOS = courseVOS;
+        this.credits = credits;
     }
 
     public int getId() {
@@ -64,6 +49,22 @@ public class SpecialisationVO {
         this.specialisationTag = specialisationTag;
     }
 
+    public String getSpecialisationName() {
+        return specialisationName;
+    }
+
+    public void setSpecialisationName(String specialisationName) {
+        this.specialisationName = specialisationName;
+    }
+
+    public Set<CourseVO> getCourseVOS() {
+        return courseVOS;
+    }
+
+    public void setCourseVOS(Set<CourseVO> courseVOS) {
+        this.courseVOS = courseVOS;
+    }
+
     public int getCredits() {
         return credits;
     }
@@ -72,5 +73,14 @@ public class SpecialisationVO {
         this.credits = credits;
     }
 
-
+    @Override
+    public String toString() {
+        return "SpecialisationVO{" +
+                "id=" + id +
+                ", specialisationTag='" + specialisationTag + '\'' +
+                ", specialisationName='" + specialisationName + '\'' +
+                ", courseVOS=" + courseVOS +
+                ", credits=" + credits +
+                '}';
+    }
 }

@@ -63,4 +63,12 @@ public class SpecialisationREST {
         return Response.ok(gson.toJson(new Status<>(specialisationDAO.getCount()))).build();
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/delete/{param}")
+    public Response deleteCourse(@PathParam("param") String id){
+        specialisationDAO.deleteById(Integer.parseInt(id));
+        return Response.ok(gson.toJson(new Status<>("success")),MediaType.APPLICATION_JSON).build();
+    }
+
 }

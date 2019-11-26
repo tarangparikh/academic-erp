@@ -22,6 +22,10 @@ public class CourseDAO {
     public boolean containsTag(String tag){
         return getCourseVO(tag)!=null;
     }
+    public int containsTagId(String tag){
+        CourseVO courseVO = getCourseVO(tag);
+        return courseVO!=null?courseVO.getId():-1;
+    }
     public CourseVO getCourseVO(String tag){
         dbOperationDAO.openCurrentSessionWithTransaction();
         Query<CourseVO> query = dbOperationDAO.getCurrentSession().createQuery("from vo.CourseVO as S where S.courseTag = :tag");
@@ -55,6 +59,25 @@ public class CourseDAO {
         dbOperationDAO.closeCurrentSessionWithTransaction();
         return count;
     }
-
+    public void update(CourseVO courseVO,int course_id) {
+        dbOperationDAO.openCurrentSessionWithTransaction();
+        courseVO.setId(course_id);
+        dbOperationDAO.update(courseVO);
+        dbOperationDAO.closeCurrentSessionWithTransaction();
+    }
+    public void deleteById(int _course_id){
+        dbOperationDAO.openCurrentSessionWithTransaction();
+        dbOperationDAO.deleteById(CourseVO.class,_course_id);
+        dbOperationDAO.closeCurrentSessionWithTransaction();
+    }
+    public boolean isValid(CourseVO a,CourseVO b){
+        if(a.getCourseTag().compareTo(b.getCourseTag())==0) return false;
+        boolean send = true;
+        for(CourseVO courseVO : a.getPrerequisiteVOS()){
+            send &= isValid(courseVO,b);
+            if(!send) return send;
+        }
+        return send;
+    }
 
 }

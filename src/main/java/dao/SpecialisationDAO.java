@@ -58,4 +58,15 @@ public class SpecialisationDAO {
         dbOperationDAO.closeCurrentSessionWithTransaction();
         return count;
     }
+    public void update(SpecialisationVO specialisationVO,int id){
+        dbOperationDAO.openCurrentSessionWithTransaction();
+        specialisationVO.setId(id);
+        dbOperationDAO.update(specialisationVO);
+        dbOperationDAO.closeCurrentSessionWithTransaction();
+    }
+    public void deleteById(int _specialisation_id){
+        dbOperationDAO.openCurrentSessionWithTransaction();
+        dbOperationDAO.deleteById(SpecialisationVO.class,_specialisation_id);
+        dbOperationDAO.closeCurrentSessionWithTransaction();
+    }
 }

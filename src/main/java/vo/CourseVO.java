@@ -31,17 +31,17 @@ public class CourseVO {
     int credits;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "Course_Course",joinColumns = {@JoinColumn(name = "id")})
+    @JoinTable(name = "Course_Course" ,joinColumns = {@JoinColumn(name = "id")},foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT),inverseForeignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Set<CourseVO> prerequisiteVOS;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "Course_Specialisation", joinColumns = { @JoinColumn(name = "id") } , inverseJoinColumns = { @JoinColumn(name = "specialisation_id") })
-    private List<SpecialisationVO> specialisations;
+    @JoinTable(name = "Course_Specialisation", joinColumns = { @JoinColumn(name = "id") } , inverseJoinColumns = { @JoinColumn(name = "specialisation_id") },foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT),inverseForeignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private Set<SpecialisationVO> specialisations;
 
     public CourseVO() {
     }
 
-    public CourseVO(String courseTag, String courseName, int capacity, int credits, Set<CourseVO> prerequisiteVOS, List<SpecialisationVO> specialisations) {
+    public CourseVO(String courseTag, String courseName, int capacity, int credits, Set<CourseVO> prerequisiteVOS, Set<SpecialisationVO> specialisations) {
         this.courseTag = courseTag;
         this.courseName = courseName;
         this.capacity = capacity;
@@ -98,11 +98,11 @@ public class CourseVO {
         this.prerequisiteVOS = prerequisiteVOS;
     }
 
-    public List<SpecialisationVO> getSpecialisations() {
+    public Set<SpecialisationVO> getSpecialisations() {
         return specialisations;
     }
 
-    public void setSpecialisations(List<SpecialisationVO> specialisations) {
+    public void setSpecialisations(Set<SpecialisationVO> specialisations) {
         this.specialisations = specialisations;
     }
 

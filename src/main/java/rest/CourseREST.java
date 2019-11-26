@@ -6,6 +6,7 @@ import dao.CourseDAO;
 import vo.CourseVO;
 
 import javax.annotation.PostConstruct;
+import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -74,9 +75,46 @@ public class CourseREST {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/tag/containsid/{param}")
+    public Response containsCourseID(@PathParam("param") String tag){
+        Integer id = courseDAO.containsTagId(tag);
+        return Response.ok(gson.toJson(new Status<>(id)),MediaType.APPLICATION_JSON).build();
+    }
+
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/count")
     public Response getCount(){
         return Response.ok(gson.toJson(new Status<>(courseDAO.getCount()))).build();
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/update")
+    public Response updateCourse(String jsonData){
+        CourseVO courseVO = gson.fromJson(jsonData,CourseVO.class);
+        courseDAO.update(courseVO,courseVO.getId());
+        return Response.ok(gson.toJson(new Status<>("success"))).build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/valid/from/{param1}/to/{param2}")
+    public Response checkValidity(@PathParam("param1") String from,@PathParam("param2") String to){
+        CourseVO f = courseDAO.getCourseVO(Integer.parseInt(from));
+        CourseVO t = courseDAO.getCourseVO(Integer.parseInt(to));
+        boolean result = courseDAO.isValid(f,t);
+        return Response.ok(gson.toJson(new Status<>(result)),MediaType.APPLICATION_JSON).build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/delete/{param}")
+    public Response deleteCourse(@PathParam("param") String id){
+        courseDAO.deleteById(Integer.parseInt(id));
+        return Response.ok(gson.toJson(new Status<>("success")),MediaType.APPLICATION_JSON).build();
     }
 
 }

@@ -235,9 +235,9 @@ var FormValidation = function() {
             submitHandler: function () {
                 var c = $('#courseVO :selected').getPrerequisiteCources();
                 var s = $('#specilisationVO :selected').getSpecialisationCourses();
-                alert(JSON.stringify(c));
+                // alert(JSON.stringify(c));
                 $().updateCourseJson(c,s);
-                alert("Getting");
+                // alert("Getting");
             }
         });
 

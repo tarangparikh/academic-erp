@@ -233,11 +233,34 @@ var FormValidation = function() {
                 agree: 'Please accept our policy'
             },
             submitHandler: function () {
-                var c = $('#courseVO :selected').getPrerequisiteCources();
-                var s = $('#specilisationVO :selected').getSpecialisationCourses();
-                alert(JSON.stringify(c));
-                $().updateCourseJson(c,s);
-                alert("Getting");
+
+                jsonData = {};
+                jsonData['specialisationTag'] = $('#specialisationTag').val();
+                jsonData['specialisationName'] = $('#specialisationName').val();
+                jsonData['credits'] = parseInt($('#specialisationCredits').val());
+                var currentID = parseInt($('#courseForm').attr("name"));
+                jsonData['id'] = currentID;
+                //alert(JSON.stringify(jsonData));
+
+                jsonResponse = updateSpecialisation(jsonData);
+
+                if(jsonResponse[1]===true){
+                    //alert("sucesss : "+JSON.stringify(jsonResponse[0]));
+                    new PNotify({
+                        title: 'Success',
+                        text: 'Course '+ $('#specialisationTag').val()+' updated successfully.',
+                        addclass: 'bg-success border-success'
+                    });
+                }else{
+                    //alert("failer : "+JSON.stringify(jsonResponse[0]));
+                    new PNotify({
+                        title: 'Error',
+                        text: 'Try re-submitting form.',
+                        addclass: 'bg-danger border-danger'
+                    });
+                }
+
+
             }
         });
 

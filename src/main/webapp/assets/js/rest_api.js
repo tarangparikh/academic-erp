@@ -1,4 +1,4 @@
-baseUrl = 'http://localhost:8081/MavenWebApplication_war_exploded/rest';
+baseUrl =  window.location.origin+'/rest';
 function getRequest(getUrl){
     var responseData = [];
     $.ajax({
@@ -42,13 +42,13 @@ function postRequest(postUrl,postData){
 
 function getCourseCount() {
     getUrl = '/course/count';
-    jsonData = getRequest(getUrl)[0];
-    return jsonData['result'];
+    jsonData = getRequest(getUrl);
+    return jsonData;
 }
 function getSpecialisationCount(){
     getUrl = '/specialisation/count';
-    jsonData = getRequest(getUrl)[0];
-    return jsonData['result'];
+    jsonData = getRequest(getUrl);
+    return jsonData;
 }
 function getCourseList(){
     getUrl = '/course/list';
@@ -72,7 +72,7 @@ function containsCourseId(label){
 }
 function containsSpecialisation(label){
     getUrl = '/specialisation/tag/contains/'+label;
-    jsonData =  getRequest(getUrl)[0];
+    jsonData =  getRequest(getUrl);
     return jsonData['reuslt'];
 }
 function getCourse(label){
@@ -92,7 +92,7 @@ function getSpecialisation(label){
 }
 function getSpecialisatoinById(id){
     getUrl = '/specialisation/id/'+id;
-    jsonData = getRequest(getUrl)[0];
+    jsonData = getRequest(getUrl);
     return jsonData;
 }
 function postCourse(postData){
@@ -121,8 +121,23 @@ function updateCourse(postData){
     jsonData = postRequest(postUrl,postData);
     return jsonData;
 }
+function updateSpecialisation(postData){
+    postUrl = '/specialisation/update';
+    jsonData = postRequest(postUrl,postData);
+    return jsonData;
+}
 function isValid(id1,id2){
     getUrl = "/course/valid/from/"+id1+"/to/"+id2;
+    jsonData = getRequest(getUrl);
+    return jsonData;
+}
+function deleteCourse(id){
+    getUrl = "/course/delete/"+id;
+    jsonData = getRequest(getUrl);
+    return jsonData;
+}
+function deleteSpecialisation(id){
+    getUrl = '/specialisation/delete/'+id;
     jsonData = getRequest(getUrl);
     return jsonData;
 }
@@ -171,7 +186,7 @@ $.fn.extend({
             var element = $(this);
             var specialisation = [];
             element.each(function () {
-                specialisation.push(getSpecialisatoinById($(this).attr('id')));
+                specialisation.push(getSpecialisatoinById($(this).attr('id'))[0]);
 
             });
             //alert(JSON.stringify(specialisation));
@@ -205,6 +220,7 @@ $.fn.extend({
             json['prerequisiteVOS'] = courses;
             json['specialisations'] = specialisation;
 
+            // alert(JSON.stringify(json));
             jsonResponse = postCourse(json);
 
             if(jsonResponse[1]===true){
@@ -215,7 +231,7 @@ $.fn.extend({
                     addclass: 'bg-success border-success'
                 });
             }else{
-                //alert("failer : "+JSON.stringify(jsonResponse[0]));
+                // alert("failer : "+JSON.stringify(jsonResponse[0]));
                 new PNotify({
                     title: 'Error',
                     text: 'Try re-submitting form.',
@@ -224,8 +240,8 @@ $.fn.extend({
             }
         },
         updateCourseJson : function (courses,specialisation) {
-            //alert(JSON.stringify(courses));
-            //alert(JSON.stringify(specialisation));
+            alert(JSON.stringify(courses));
+            alert(JSON.stringify(specialisation));
             var jsonData = containsCourseId($('#courseTag').val());
             if(jsonData[1]===false){
                 new PNotify({
@@ -237,11 +253,13 @@ $.fn.extend({
             }
             var dbID = jsonData[0]['result'];
             var currentID = parseInt($('#courseForm').attr("name"));
-            //alert(dbID+" "+currentID);
-            if(!(dbID===currentID)){
+            alert($('#courseTag').val());
+            alert(JSON.stringify(jsonData));
+            alert(dbID+" "+currentID);
+            if(dbID>0&&!(dbID===currentID)){
                 new PNotify({
                     title: 'Error',
-                    text: 'Course tag already exist.',
+                    text: 'Course tag already exist in update.',
                     addclass: 'bg-warning border-warning'
                 });
                 return;

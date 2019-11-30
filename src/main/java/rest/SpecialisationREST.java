@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import dao.SpecialisationDAO;
+import vo.CourseVO;
 import vo.SpecialisationVO;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -69,6 +70,15 @@ public class SpecialisationREST {
     public Response deleteCourse(@PathParam("param") String id){
         specialisationDAO.deleteById(Integer.parseInt(id));
         return Response.ok(gson.toJson(new Status<>("success")),MediaType.APPLICATION_JSON).build();
+    }
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/update")
+    public Response updateCourse(String jsonData){
+        SpecialisationVO specialisationVO = gson.fromJson(jsonData,SpecialisationVO.class);
+        specialisationDAO.update(specialisationVO,specialisationVO.getId());
+        return Response.ok(gson.toJson(new Status<>("success"))).build();
     }
 
 }

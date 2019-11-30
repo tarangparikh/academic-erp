@@ -115,7 +115,7 @@ var FormValidation = function() {
         }
 
         // Initialize
-        var validator = $('#courseForm').submit(function (event) {
+        var validator = $('#specialisationForm').submit(function (event) {
             event.preventDefault();
         }).validate({
             ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
@@ -233,11 +233,42 @@ var FormValidation = function() {
                 agree: 'Please accept our policy'
             },
             submitHandler: function () {
-                var c = $('#courseVO :selected').getPrerequisiteCources();
-                var s = $('#specilisationVO :selected').getSpecialisationCourses();
-                alert(JSON.stringify(c));
-                $().updateCourseJson(c,s);
-                alert("Getting");
+                jsonData = {};
+                jsonData['specialisationTag'] = $('#specialisationTag').val();
+                jsonData['specialisationName'] = $('#specialisationName').val();
+                jsonData['credits'] = parseInt($('#specialisationCredits').val());
+                //alert(jsonData['specialisationTag']);
+                var status = getRequest('/specialisation/tag/contains/'+jsonData['specialisationTag']);
+                if(status[1]===false){
+                    new PNotify({
+                        title: 'Error',
+                        text: 'Try re-submitting form.',
+                        addclass: 'bg-danger border-danger'
+                    });
+                    return;
+                }
+                if(status[0]['result']===true){
+                    new PNotify({
+                        title: 'Error',
+                        text: 'Course tag already exist in update.',
+                        addclass: 'bg-warning border-warning'
+                    });
+                    return;
+                }
+                status = postSpecialisation(jsonData);
+                if(status[1]===false){
+                    new PNotify({
+                        title: 'Error',
+                        text: 'Try re-submitting form.',
+                        addclass: 'bg-danger border-danger'
+                    });
+                    return;
+                }
+                new PNotify({
+                    title: 'Success',
+                    text: 'Specialisation '+$('#specialisationTag').val()+' created successfully.',
+                    addclass: 'bg-success border-success'
+                });
             }
         });
 

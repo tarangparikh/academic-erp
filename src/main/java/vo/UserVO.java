@@ -10,7 +10,7 @@ public class UserVO {
     @Column
     private int id;
 
-    @Column
+    @Column(unique = true)
     private String email;
 
     @Column

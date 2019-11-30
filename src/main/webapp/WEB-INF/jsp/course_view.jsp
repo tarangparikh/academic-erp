@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -5,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Limitless - Responsive Web Application Kit by Eugene Kopyov</title>
+    <title>Apro | Course | Add</title>
 
     <!-- Global stylesheets -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
@@ -41,7 +42,28 @@
     <!-- /theme JS files -->
     <script>
         $(document).ready(function () {
+            var cc = $('#courseCount');
+            var sc = $('#specialisationCount');
+            var ccount = getCourseCount();
+            var scount = getSpecialisationCount();
+            //alert(JSON.stringify(scount));
+            if(ccount[1]===false){
+                cc.empty();
+                cc.append('?');
+            }else{
+                cc.empty();
+                cc.append(ccount[0]['result']);
+            }
+            // alert('getting');
+            if(scount[1]===false){
+                sc.empty();
+                sc.append('?');
+            }else{
+                //alert(scount[0]['result']);
+                sc.empty();
+                sc.append(scount[0]['result']);
 
+            }
             var table = $('.datatable-basic').DataTable({
                 responsive : true
             });
@@ -95,9 +117,11 @@
                     confirmButtonClass: 'btn btn-primary',
                     cancelButtonClass: 'btn btn-light'
                 });
-            }
+            };
             setCustomDefaults();
             $('.delete_button').on('click', function() {
+                var id = $(this).attr('id');
+                // alert(id);
                 swal({
                     title: 'Are you sure?',
                     text: 'You will not be able to recover this imaginary file!',
@@ -107,9 +131,22 @@
                     allowOutsideClick: false
                 }).then(function(willDelete){
                      if(willDelete.value){
-                         alert("Delete");
+                         var jsonResponse = deleteCourse(id);
+                         if(jsonResponse[1]===false){
+                              new PNotify({
+                                 title: 'Error',
+                                 text: 'Unbale to delete course',
+                                 addclass: 'bg-danger border-danger'
+                             });
+                         }else{
+                             new PNotify({
+                                 title: 'Success',
+                                 text: 'Course deleted successfully.',
+                                 addclass: 'bg-success border-success'
+                             });
+                         }
                      }else{
-                         alert("No delete");
+
                      }
                 });
 
@@ -123,11 +160,11 @@
 
 <!-- Main navbar -->
 <div class="navbar navbar-expand-md navbar-dark">
-    <div class="navbar-brand">
-        <a href="../full/index.html" class="d-inline-block">
-            <img src="../../../../global_assets/images/logo_light.png" alt="">
-        </a>
-    </div>
+<%--    <div class="navbar-brand">--%>
+<%--        <a href="../full/index.html" class="d-inline-block">--%>
+<%--            <img src="../../../../global_assets/images/logo_light.png" alt="">--%>
+<%--        </a>--%>
+<%--    </div>--%>
 
     <div class="d-md-none">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
@@ -147,37 +184,38 @@
             </li>
         </ul>
 
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a href="#" class="navbar-nav-link">
-                    Text link
-                </a>
-            </li>
+<%--        <ul class="navbar-nav ml-auto">--%>
+<%--            <li class="nav-item">--%>
+<%--                <a href="#" class="navbar-nav-link">--%>
+<%--                    Text link--%>
+<%--                </a>--%>
+<%--            </li>--%>
 
-            <li class="nav-item dropdown">
-                <a href="#" class="navbar-nav-link">
-                    <i class="icon-bell2"></i>
-                    <span class="d-md-none ml-2">Notifications</span>
-                    <span class="badge badge-mark border-white ml-auto ml-md-0"></span>
-                </a>
-            </li>
+<%--            <li class="nav-item dropdown">--%>
+<%--                <a href="#" class="navbar-nav-link">--%>
+<%--                    <i class="icon-bell2"></i>--%>
 
-            <li class="nav-item dropdown dropdown-user">
-                <a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown">
-                    <img src="../../../../global_assets/images/image.png" class="rounded-circle" alt="">
-                    <span>Victoria</span>
-                </a>
+<%--                    <span class="d-md-none ml-2">Notifications</span>--%>
+<%--                    <span class="badge badge-mark border-white ml-auto ml-md-0"></span>--%>
+<%--                </a>--%>
+<%--            </li>--%>
 
-                <div class="dropdown-menu dropdown-menu-right">
-                    <a href="#" class="dropdown-item"><i class="icon-user-plus"></i> My profile</a>
-                    <a href="#" class="dropdown-item"><i class="icon-coins"></i> My balance</a>
-                    <a href="#" class="dropdown-item"><i class="icon-comment-discussion"></i> Messages <span class="badge badge-pill bg-blue ml-auto">58</span></a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item"><i class="icon-cog5"></i> Account settings</a>
-                    <a href="#" class="dropdown-item"><i class="icon-switch2"></i> Logout</a>
-                </div>
-            </li>
-        </ul>
+<%--            <li class="nav-item dropdown dropdown-user">--%>
+<%--                <a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown">--%>
+<%--                    <img src="../../../../global_assets/images/image.png" class="rounded-circle" alt="">--%>
+<%--                    <span>Victoria</span>--%>
+<%--                </a>--%>
+
+<%--                <div class="dropdown-menu dropdown-menu-right">--%>
+<%--                    <a href="#" class="dropdown-item"><i class="icon-user-plus"></i> My profile</a>--%>
+<%--                    <a href="#" class="dropdown-item"><i class="icon-coins"></i> My balance</a>--%>
+<%--                    <a href="#" class="dropdown-item"><i class="icon-comment-discussion"></i> Messages <span class="badge badge-pill bg-blue ml-auto">58</span></a>--%>
+<%--                    <div class="dropdown-divider"></div>--%>
+<%--                    <a href="#" class="dropdown-item"><i class="icon-cog5"></i> Account settings</a>--%>
+<%--                    <a href="#" class="dropdown-item"><i class="icon-switch2"></i> Logout</a>--%>
+<%--                </div>--%>
+<%--            </li>--%>
+<%--        </ul>--%>
     </div>
 </div>
 <!-- /main navbar -->
@@ -215,9 +253,9 @@
                         </div>
 
                         <div class="media-body">
-                            <div class="media-title font-weight-semibold">Victoria Baker</div>
+                            <div class="media-title font-weight-semibold">${sessionScope.get("token")}</div>
                             <div class="font-size-xs opacity-50">
-                                <i class="icon-pin font-size-sm"></i> &nbsp;Santa Ana, CA
+                                <i class="icon-pin font-size-sm"></i> &nbsp;IIIT-B Bangalore
                             </div>
                         </div>
 
@@ -237,32 +275,38 @@
                     <!-- Main -->
                     <li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i></li>
                     <li class="nav-item">
-                        <a href="../full/index.html" class="nav-link">
+                        <a href="${pageContext.request.contextPath}/course/view" class="nav-link">
                             <i class="icon-home4"></i>
                             <span>Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item nav-item-submenu nav-item-expanded nav-item-open">
-                        <a href="#" class="nav-link"><i class="icon-book2"></i> <span>Course</span></a>
+                        <a href="#" class="nav-link"><i class="icon-book2"></i>
+                            <span>Course</span>
+                            <span  id="courseCount"  class="badge bg-danger-400 align-self-center ml-auto">0</span>
+                        </a>
                         <ul class="nav nav-group-sub" data-submenu-title="Course">
-                            <li class="nav-item"><a href="course_create.html" class="nav-link"><i class="icon-pen-plus"></i><div class="col-6">Create</div><div class="col-6"></div> </a></li>
-                            <li class="nav-item"><a href="#" class="nav-link active"><i class="icon-search4"></i> <div class="col-6">View</div><div class="col-6"></div> </a></li>
+                            <li class="nav-item"><a href="${pageContext.request.contextPath}/course/create" class="nav-link"><i class="icon-pen-plus"></i><div class="col-6">Create</div><div class="col-6"></div> </a></li>
+                            <li class="nav-item"><a href="${pageContext.request.contextPath}/course/view" class="nav-link active"><i class="icon-search4"></i> <div class="col-6">View</div><div class="col-6"></div> </a></li>
                         </ul>
                     </li>
                     <li class="nav-item nav-item-submenu">
-                        <a href="#" class="nav-link"><i class="icon-book"></i> <span>Specialisation</span></a>
+                        <a href="#" class="nav-link"><i class="icon-book"></i>
+                            <span>Specialisation</span>
+                            <span id="specialisationCount" class="badge bg-danger-400 align-self-center ml-auto">0</span>
+                        </a>
                         <ul class="nav nav-group-sub" data-submenu-title="Specialisation">
-                            <li class="nav-item"><a href="specialisation_create.html" class="nav-link"><i class="icon-pen-plus"></i> <div class="col-6">Create</div><div class="col-6"></div> </a></li>
-                            <li class="nav-item"><a href="specialisation_view.html" class="nav-link"><i class="icon-search4"></i><div class="col-6">Create</div><div class="col-6"></div> </a></li>
+                            <li class="nav-item"><a href="${pageContext.request.contextPath}/specialisation/create" class="nav-link"><i class="icon-pen-plus"></i> <div class="col-6">Create</div><div class="col-6"></div> </a></li>
+                            <li class="nav-item"><a href="${pageContext.request.contextPath}/specialisation/view" class="nav-link"><i class="icon-search4"></i><div class="col-6">View</div><div class="col-6"></div> </a></li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a href="../full/changelog.html" class="nav-link">
-                            <i class="icon-list-unordered"></i>
-                            <span>Changelog</span>
-                            <span class="badge bg-blue-400 align-self-center ml-auto">2.0</span>
-                        </a>
-                    </li>
+<%--                    <li class="nav-item">--%>
+<%--                        <a href="../full/changelog.html" class="nav-link">--%>
+<%--                            <i class="icon-list-unordered"></i>--%>
+<%--                            <span>Changelog</span>--%>
+<%--                            <span class="badge bg-blue-400 align-self-center ml-auto">2.0</span>--%>
+<%--                        </a>--%>
+<%--                    </li>--%>
                     <!-- /main -->
 
                 </ul>
@@ -283,47 +327,53 @@
         <div class="page-header page-header-light">
             <div class="page-header-content header-elements-md-inline">
                 <div class="page-title d-flex">
-                    <h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Starters</span> - 1 Sidebar</h4>
-                    <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+                    <h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Course</span> - Add</h4>
+                    <%--                    <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>--%>
                 </div>
 
-                <div class="header-elements d-none">
-                    <a href="#" class="btn btn-labeled btn-labeled-right bg-primary">Button <b><i class="icon-menu7"></i></b></a>
+                <div class="">
+                    <div class="row ">
+                        <div class="col-8">
+                        </div>
+                        <div class="col-4 d-none d-md-block">
+                            <img id="iiitbimage" class="card-img  text-right" src="${pageContext.request.contextPath}/global_assets/iiitb_logo.jpg" alt="">
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
                 <div class="d-flex">
                     <div class="breadcrumb">
-                        <a href="index.html" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
-                        <a href="#" class="breadcrumb-item">Link</a>
-                        <span class="breadcrumb-item active">Current</span>
+<%--                        <a href="index.html" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>--%>
+                        <a href="#" class="breadcrumb-item">Course</a>
+                        <span class="breadcrumb-item active">View</span>
                     </div>
 
                     <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
                 </div>
 
-                <div class="header-elements d-none">
-                    <div class="breadcrumb justify-content-center">
-                        <a href="#" class="breadcrumb-elements-item">
-                            Link
-                        </a>
+<%--                <div class="header-elements d-none">--%>
+<%--                    <div class="breadcrumb justify-content-center">--%>
+<%--                        <a href="#" class="breadcrumb-elements-item">--%>
+<%--                            Link--%>
+<%--                        </a>--%>
 
-                        <div class="breadcrumb-elements-item dropdown p-0">
-                            <a href="#" class="breadcrumb-elements-item dropdown-toggle" data-toggle="dropdown">
-                                Dropdown
-                            </a>
+<%--                        <div class="breadcrumb-elements-item dropdown p-0">--%>
+<%--                            <a href="#" class="breadcrumb-elements-item dropdown-toggle" data-toggle="dropdown">--%>
+<%--                                Dropdown--%>
+<%--                            </a>--%>
 
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a href="#" class="dropdown-item">Action</a>
-                                <a href="#" class="dropdown-item">Another action</a>
-                                <a href="#" class="dropdown-item">One more action</a>
-                                <div class="dropdown-divider"></div>
-                                <a href="#" class="dropdown-item">Separate action</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<%--                            <div class="dropdown-menu dropdown-menu-right">--%>
+<%--                                <a href="#" class="dropdown-item">Action</a>--%>
+<%--                                <a href="#" class="dropdown-item">Another action</a>--%>
+<%--                                <a href="#" class="dropdown-item">One more action</a>--%>
+<%--                                <div class="dropdown-divider"></div>--%>
+<%--                                <a href="#" class="dropdown-item">Separate action</a>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
             </div>
         </div>
         <!-- /page header -->
@@ -335,19 +385,19 @@
             <!-- Basic datatable -->
             <div class="card">
                 <div class="card-header header-elements-inline">
-                    <h5 class="card-title">Basic datatable</h5>
-                    <div class="header-elements">
-                        <div class="list-icons">
-                            <a class="list-icons-item" data-action="collapse"></a>
-                            <a class="list-icons-item" data-action="reload"></a>
-                            <a class="list-icons-item" data-action="remove"></a>
-                        </div>
-                    </div>
+                    <h5 class="card-title">Course View</h5>
+<%--                    <div class="header-elements">--%>
+<%--                        <div class="list-icons">--%>
+<%--                            <a class="list-icons-item" data-action="collapse"></a>--%>
+<%--                            <a class="list-icons-item" data-action="reload"></a>--%>
+<%--                            <a class="list-icons-item" data-action="remove"></a>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
                 </div>
 
-                <div class="card-body">
-                    The <code>DataTables</code> is a highly flexible tool, based upon the foundations of progressive enhancement, and will add advanced interaction controls to any HTML table. DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function. Searching, ordering, paging etc goodness will be immediately added to the table, as shown in this example. <strong>Datatables support all available table styling.</strong>
-                </div>
+<%--                <div class="card-body">--%>
+<%--                    The <code>DataTables</code> is a highly flexible tool, based upon the foundations of progressive enhancement, and will add advanced interaction controls to any HTML table. DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function. Searching, ordering, paging etc goodness will be immediately added to the table, as shown in this example. <strong>Datatables support all available table styling.</strong>--%>
+<%--                </div>--%>
 
                 <table class="table datatable-basic">
                     <thead>
@@ -430,29 +480,8 @@
 
             <div class="navbar-collapse collapse" id="navbar-footer">
 					<span class="navbar-text">
-						&copy; 2015 - 2018. <a href="#">Limitless Web App Kit</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Eugene Kopyov</a>
+						&copy; 2019 - 2021. <a href="#">APro | Acedemic Erp</a> by <a href="https://github.com/tarangparikh" target="_blank">Tarang Parikh</a> and <a href="https://github.com/tamasane" target="_blank">Tushar Masane</a>
 					</span>
-
-                <ul class="navbar-nav ml-lg-auto">
-                    <li class="nav-item">
-                        <a href="#" class="navbar-nav-link">Text link</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="#" class="navbar-nav-link">
-                            <i class="icon-lifebuoy"></i>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="https://themeforest.net/item/limitless-responsive-web-application-kit/13080328?ref=kopyov" class="navbar-nav-link font-weight-semibold">
-								<span class="text-pink-400">
-									<i class="icon-cart2 mr-2"></i>
-									Purchase
-								</span>
-                        </a>
-                    </li>
-                </ul>
             </div>
         </div>
         <!-- /footer -->
@@ -586,9 +615,9 @@
 
                                 <!-- Multiple select -->
                                 <div class="form-group row">
-                                    <label class="col-form-label col-lg-3">Prerequisite <span class="text-danger">*</span></label>
+                                    <label class="col-form-label col-lg-3">Prerequisite </label>
                                     <div class="col-lg-9">
-                                        <select name="default_multiple_select_specialisation" class="form-control"  id="courseVO" multiple required>
+                                        <select name="default_multiple_select_specialisation" class="form-control"  id="courseVO" multiple>
                                             <optgroup label="Courses" id="courseOptions">
                                             </optgroup>
                                             <optgroup label="End">

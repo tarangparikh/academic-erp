@@ -32,52 +32,7 @@ public class DBOperationDAO {
     public Transaction getCurrentTransaction(){
         return this.currentTransaction;
     }
-    public Integer
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    insert(Object object){
+    public Integer insert(Object object){
         return (Integer)getCurrentSession().save(object);
     }
     public <T> List<T> getList(Class<T> tClass,String query){

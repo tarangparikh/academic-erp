@@ -551,23 +551,23 @@
     <div class=" modal-dialog modal-lg" >
         <div class="modal-content">
             <div class=" modal-header header-elements-inline">
-                <h5 class="card-title">Form validation</h5>
-                <div class="header-elements">
-                    <div class="list-icons">
-                        <a class="list-icons-item" data-action="collapse"></a>
-                        <a class="list-icons-item" data-action="reload"></a>
-                        <a class="list-icons-item" data-action="remove"></a>
-                    </div>
-                </div>
+                <h5 class="card-title">Specialisation Update</h5>
+<%--                <div class="header-elements">--%>
+<%--                    <div class="list-icons">--%>
+<%--                        <a class="list-icons-item" data-action="collapse"></a>--%>
+<%--                        <a class="list-icons-item" data-action="reload"></a>--%>
+<%--                        <a class="list-icons-item" data-action="remove"></a>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
             </div>
 
             <form class="form-validate-jquery" action="#"  id="courseForm">
                 <div class=" modal-body">
-                    <p class="mb-4">Validate.js makes simple clientside form validation easy, whilst still offering plenty of customization options. The plugin comes bundled with a useful set of validation methods, including URL and email validation, while providing an API to write your own methods. All bundled methods come with default error messages in english and translations into 37 other languages. <strong>Note:</strong> <code>success</code> callback is configured for demo purposes only and can be removed in validation setup.</p>
+<%--                    <p class="mb-4">Validate.js makes simple clientside form validation easy, whilst still offering plenty of customization options. The plugin comes bundled with a useful set of validation methods, including URL and email validation, while providing an API to write your own methods. All bundled methods come with default error messages in english and translations into 37 other languages. <strong>Note:</strong> <code>success</code> callback is configured for demo purposes only and can be removed in validation setup.</p>--%>
 
 
                     <fieldset class="mb-3">
-                        <legend class="text-uppercase font-size-sm font-weight-bold">Basic inputs</legend>
+                        <legend class="text-uppercase font-size-sm font-weight-bold">Update Specialisation</legend>
 
                         <div class="row">
                             <div class="col-md-6">

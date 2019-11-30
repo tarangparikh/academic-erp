@@ -15,7 +15,7 @@
         <mapping class="vo.UserVO"></mapping>
         <mapping class="vo.SpecialisationVO"></mapping>
         <mapping class="vo.CourseVO"></mapping>
-        <mapping class="vo.PrerequisiteVO"></mapping>
+<!--        <mapping class="vo.PrerequisiteVO"></mapping>-->
 
     </session-factory>
 </hibernate-configuration>

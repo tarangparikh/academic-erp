@@ -1,7 +1,7 @@
 # academic-erp
 Deployed on heroku platform : (https://academic-erp.herokuapp.com/)
-* Default Username = root
-* Default Password = root
+* Default Username = admin
+* Default Password = admin
 
 Academic Enterprise System made using following technologies
 * Java

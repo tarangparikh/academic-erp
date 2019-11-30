@@ -240,8 +240,8 @@ $.fn.extend({
             }
         },
         updateCourseJson : function (courses,specialisation) {
-            alert(JSON.stringify(courses));
-            alert(JSON.stringify(specialisation));
+            // alert(JSON.stringify(courses));
+            // alert(JSON.stringify(specialisation));
             var jsonData = containsCourseId($('#courseTag').val());
             if(jsonData[1]===false){
                 new PNotify({
@@ -253,9 +253,9 @@ $.fn.extend({
             }
             var dbID = jsonData[0]['result'];
             var currentID = parseInt($('#courseForm').attr("name"));
-            alert($('#courseTag').val());
-            alert(JSON.stringify(jsonData));
-            alert(dbID+" "+currentID);
+            // alert($('#courseTag').val());
+            // alert(JSON.stringify(jsonData));
+            // alert(dbID+" "+currentID);
             if(dbID>0&&!(dbID===currentID)){
                 new PNotify({
                     title: 'Error',
@@ -277,14 +277,14 @@ $.fn.extend({
             jsonResponse = updateCourse(json);
 
             if(jsonResponse[1]===true){
-                alert("sucesss : "+JSON.stringify(jsonResponse[0]));
+                // alert("sucesss : "+JSON.stringify(jsonResponse[0]));
                 new PNotify({
                     title: 'Success',
                     text: 'Course '+json['courseTag']+' updated successfully.',
                     addclass: 'bg-success border-success'
                 });
             }else{
-                alert("failer : "+JSON.stringify(jsonResponse[0]));
+                // alert("failer : "+JSON.stringify(jsonResponse[0]));
                 new PNotify({
                     title: 'Error',
                     text: 'Try re-submitting form.',

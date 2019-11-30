@@ -50,6 +50,7 @@ public class HomeREST {
 
 
     @POST
+    @Path("/post")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response post(String jsonData){

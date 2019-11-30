@@ -12,9 +12,9 @@ Academic Enterprise System made using following technologies
 Configure the hibernate.cfg.xml and persistenceDAO in resource folder of deployment on local system.
 and initial createTable.sql file
 
-#####Build War file:
+### Build War file:
 ```
-mvn clean war
+mvn clean install
 ```
 
 

@@ -16,7 +16,7 @@ public class PersistenceDAO {
     private static final Map<String,String> LOCAL_CONFIGURATION = getLocalConfiguration();
     private static final Map<String,String> HEROKU_CONFIGURATION = getHerokuConfiguration();
     private static final String POSTGRES_DRIVER_CLASS = "org.postgresql.Driver";
-    private static final String POSTGRES_DIALECT = "org.hibernate.dialect.PostgreSQL10Dialect";
+    private static final String POSTGRES_DIALECT = "org.hibernate.dialect.PostgreSQL9Dialect";
     private static final String LOCAL_MYSQL_DRIVER_CLASS = "com.mysql.cj.jdbc.Driver";
     private static final String LOCAL_MYSQL_DIALECT = "org.hibernate.dialect.MySQL57Dialect";
     private static final String LOCAL_MYSQL_CONNECTION_URL = "jdbc:mysql://localhost:3306/zpro?userSSL=false";
